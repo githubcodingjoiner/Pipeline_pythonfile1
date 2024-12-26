@@ -17,20 +17,22 @@ pipeline{
         '''
       }
     }
-    stage('SonarAnalysis'){
-      environment{
-        SONAR_TOKEN = credentials('sonar-token')
-      }
-      steps{
-        bat '''
-        set PATH = %PYTHON_PATH%;%PATH%
-        sonar-scanner -Dsonar.projectKey=Pipeline
-        -Dsonar.sources=.
-        -Dsonar.host.url=http://localhost:9000
-        -Dsonar.token= %SONAR_TOKEN%
-        '''
-      }
+    stage('SonarAnalysis') {
+    environment {
+        SONAR_TOKEN = credentials('sonar-token') // Ensure this matches the actual credentials ID
     }
+    steps {
+        bat '''
+        set PATH=%PYTHON_PATH%;%PATH%
+        sonar-scanner ^
+        -Dsonar.projectKey=Pipeline ^
+        -Dsonar.sources=. ^
+        -Dsonar.host.url=http://localhost:9000 ^
+        -Dsonar.token=%SONAR_TOKEN%
+        '''
+       }
+    }
+
   }
   post{
     success{
